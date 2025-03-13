@@ -1,0 +1,1 @@
+ /Users/alitas/Documents/GitHub/TarifAI/.dart_tool/flutter_build/647784b481472bf2c049f88e812a1069/native_assets.json: 

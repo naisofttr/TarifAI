@@ -39,6 +39,23 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _addIngredient() {
     final text = _ingredientController.text.trim();
     if (text.isNotEmpty) {
+      // Malzemenin listede olup olmadığını kontrol et
+      if (_ingredients.contains(text)) {
+        // Malzeme zaten listede varsa
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.ingredientAlreadyExists),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+        _ingredientController.clear();
+        // setState'in tamamlanmasını bekleyip focus'u tetikle
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _focusNode.requestFocus();
+        });
+        return;
+      }
+
       setState(() {
         _ingredients.add(text);
         _ingredientController.clear();

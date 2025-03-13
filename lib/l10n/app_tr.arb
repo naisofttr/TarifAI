@@ -8,18 +8,19 @@
     "listRecipes": "Tarifleri Listele",
     "suggestedRecipes": "Önerilen Tarifler:",
     "pleaseAddIngredient": "Lütfen en az bir malzeme ekleyin",
-    "error": "Hata oluştu: {error}",
     "@error": {
         "placeholders": {
             "error": {
-                "type": "String"
+                "type": "Object"
             }
         }
     },
+    "error": "Hata oluştu: {error}",
     "login": "Giriş Yap",
     "welcomeTitle": "TarifAI'ya Hoş Geldiniz!",
     "welcomeDescription": "Elinizde olan malzemeleri girin, size yapabileceğiniz lezzetli tarifleri önereyim.",
     "noIngredientsMessage": "Mutfağınızda olan malzemeleri eklemeye başlayın",
     "addIngredientButtonTooltip": "Bu malzemeyi listenize ekleyin",
-    "ingredientInputHelper": "Bir malzeme yazın ve + tuşuna veya Enter'a basın"
+    "ingredientInputHelper": "Bir malzeme yazın ve + tuşuna veya Enter'a basın",
+    "ingredientAlreadyExists": "Bu malzeme zaten listenizde mevcut"
 } 

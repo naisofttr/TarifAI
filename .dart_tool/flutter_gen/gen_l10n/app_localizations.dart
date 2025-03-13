@@ -153,7 +153,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Error occurred: {error}'**
-  String error(String error);
+  String error(Object error);
 
   /// No description provided for @login.
   ///
@@ -190,6 +190,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Type an ingredient and press + or Enter'**
   String get ingredientInputHelper;
+
+  /// No description provided for @ingredientAlreadyExists.
+  ///
+  /// In en, this message translates to:
+  /// **'This ingredient is already in your list'**
+  String get ingredientAlreadyExists;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

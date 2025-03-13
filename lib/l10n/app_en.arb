@@ -8,18 +8,19 @@
     "listRecipes": "List Recipes",
     "suggestedRecipes": "Suggested Recipes:",
     "pleaseAddIngredient": "Please add at least one ingredient",
-    "error": "Error occurred: {error}",
     "@error": {
         "placeholders": {
             "error": {
-                "type": "String"
+                "type": "Object"
             }
         }
     },
+    "error": "Error occurred: {error}",
     "login": "Login",
     "welcomeTitle": "Welcome to TarifAI!",
     "welcomeDescription": "Enter the ingredients you have, and I'll suggest delicious recipes you can make.",
     "noIngredientsMessage": "Start by adding ingredients you have in your kitchen",
     "addIngredientButtonTooltip": "Add this ingredient to your list",
-    "ingredientInputHelper": "Type an ingredient and press + or Enter"
+    "ingredientInputHelper": "Type an ingredient and press + or Enter",
+    "ingredientAlreadyExists": "This ingredient is already in your list"
 } 

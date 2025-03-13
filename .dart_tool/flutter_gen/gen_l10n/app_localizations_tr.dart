@@ -36,7 +36,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get pleaseAddIngredient => 'Lütfen en az bir malzeme ekleyin';
 
   @override
-  String error(String error) {
+  String error(Object error) {
     return 'Hata oluştu: $error';
   }
 
@@ -57,4 +57,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get ingredientInputHelper => 'Bir malzeme yazın ve + tuşuna veya Enter\'a basın';
+
+  @override
+  String get ingredientAlreadyExists => 'Bu malzeme zaten listenizde mevcut';
 }

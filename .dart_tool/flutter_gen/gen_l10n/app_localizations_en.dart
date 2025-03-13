@@ -36,7 +36,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseAddIngredient => 'Please add at least one ingredient';
 
   @override
-  String error(String error) {
+  String error(Object error) {
     return 'Error occurred: $error';
   }
 
@@ -57,4 +57,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ingredientInputHelper => 'Type an ingredient and press + or Enter';
+
+  @override
+  String get ingredientAlreadyExists => 'This ingredient is already in your list';
 }
