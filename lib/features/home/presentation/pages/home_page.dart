@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tarifai/core/utils/api_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final apiServiceProvider = Provider((ref) => ApiService());
 
@@ -57,10 +58,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Future<void> _getRecipes() async {
+    final l10n = AppLocalizations.of(context)!;
     if (_ingredients.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Lütfen en az bir malzeme ekleyin'),
+        SnackBar(
+          content: Text(l10n.pleaseAddIngredient),
         ),
       );
       return;
@@ -74,7 +76,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     try {
       final response = await ref.read(apiServiceProvider).getRecipes(
             _ingredients.join(', '),
-            'tr',
+            Localizations.localeOf(context).languageCode,
           );
       setState(() {
         _recipe = response['response'] as String;
@@ -82,7 +84,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Hata oluştu: $e'),
+          content: Text(l10n.error(e.toString())),
           backgroundColor: Colors.red,
         ),
       );
@@ -95,9 +97,10 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TarifAI'),
+        title: Text(l10n.appTitle),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -109,9 +112,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                   child: TextField(
                     controller: _ingredientController,
                     focusNode: _focusNode,
-                    decoration: const InputDecoration(
-                      hintText: 'Malzeme ismi girin',
-                      labelText: 'Malzeme',
+                    decoration: InputDecoration(
+                      hintText: l10n.ingredientHint,
+                      labelText: l10n.ingredientLabel,
                     ),
                     onSubmitted: (_) => _addIngredient(),
                   ),
@@ -132,9 +135,9 @@ class _HomePageState extends ConsumerState<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Eklenen Malzemeler:',
-                    style: TextStyle(
+                  Text(
+                    l10n.addedIngredients,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -142,7 +145,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   IconButton(
                     onPressed: _clearAllIngredients,
                     icon: const Icon(Icons.delete_sweep),
-                    tooltip: 'Tüm malzemeleri temizle',
+                    tooltip: l10n.clearAllIngredients,
                     color: Colors.red,
                   ),
                 ],
@@ -173,14 +176,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                           strokeWidth: 2,
                         ),
                       )
-                    : const Text('Tarifleri Listele'),
+                    : Text(l10n.listRecipes),
               ),
             ],
             if (_recipe != null) ...[
               const SizedBox(height: 24),
-              const Text(
-                'Önerilen Tarifler:',
-                style: TextStyle(
+              Text(
+                l10n.suggestedRecipes,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),

@@ -1,0 +1,20 @@
+{
+    "appTitle": "TarifAI",
+    "addIngredient": "Add ingredient",
+    "ingredientHint": "Enter ingredient name",
+    "ingredientLabel": "Ingredient",
+    "addedIngredients": "Added Ingredients:",
+    "clearAllIngredients": "Clear all ingredients",
+    "listRecipes": "List Recipes",
+    "suggestedRecipes": "Suggested Recipes:",
+    "pleaseAddIngredient": "Please add at least one ingredient",
+    "error": "Error occurred: {error}",
+    "@error": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "login": "Login"
+} 

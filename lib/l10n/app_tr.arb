@@ -1,0 +1,20 @@
+{
+    "appTitle": "TarifAI",
+    "addIngredient": "Malzeme ekle",
+    "ingredientHint": "Malzeme ismi girin",
+    "ingredientLabel": "Malzeme",
+    "addedIngredients": "Eklenen Malzemeler:",
+    "clearAllIngredients": "Tüm malzemeleri temizle",
+    "listRecipes": "Tarifleri Listele",
+    "suggestedRecipes": "Önerilen Tarifler:",
+    "pleaseAddIngredient": "Lütfen en az bir malzeme ekleyin",
+    "error": "Hata oluştu: {error}",
+    "@error": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "login": "Giriş Yap"
+} 
