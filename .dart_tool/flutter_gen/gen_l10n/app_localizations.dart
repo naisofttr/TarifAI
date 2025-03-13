@@ -160,6 +160,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Login'**
   String get login;
+
+  /// No description provided for @welcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to TarifAI!'**
+  String get welcomeTitle;
+
+  /// No description provided for @welcomeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the ingredients you have, and I\'ll suggest delicious recipes you can make.'**
+  String get welcomeDescription;
+
+  /// No description provided for @noIngredientsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Start by adding ingredients you have in your kitchen'**
+  String get noIngredientsMessage;
+
+  /// No description provided for @addIngredientButtonTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Add this ingredient to your list'**
+  String get addIngredientButtonTooltip;
+
+  /// No description provided for @ingredientInputHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Type an ingredient and press + or Enter'**
+  String get ingredientInputHelper;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

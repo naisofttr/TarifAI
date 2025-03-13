@@ -42,4 +42,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get login => 'Login';
+
+  @override
+  String get welcomeTitle => 'Welcome to TarifAI!';
+
+  @override
+  String get welcomeDescription => 'Enter the ingredients you have, and I\'ll suggest delicious recipes you can make.';
+
+  @override
+  String get noIngredientsMessage => 'Start by adding ingredients you have in your kitchen';
+
+  @override
+  String get addIngredientButtonTooltip => 'Add this ingredient to your list';
+
+  @override
+  String get ingredientInputHelper => 'Type an ingredient and press + or Enter';
 }

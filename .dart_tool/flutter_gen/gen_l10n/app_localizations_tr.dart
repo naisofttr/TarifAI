@@ -42,4 +42,19 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get login => 'Giriş Yap';
+
+  @override
+  String get welcomeTitle => 'TarifAI\'ya Hoş Geldiniz!';
+
+  @override
+  String get welcomeDescription => 'Elinizde olan malzemeleri girin, size yapabileceğiniz lezzetli tarifleri önereyim.';
+
+  @override
+  String get noIngredientsMessage => 'Mutfağınızda olan malzemeleri eklemeye başlayın';
+
+  @override
+  String get addIngredientButtonTooltip => 'Bu malzemeyi listenize ekleyin';
+
+  @override
+  String get ingredientInputHelper => 'Bir malzeme yazın ve + tuşuna veya Enter\'a basın';
 }

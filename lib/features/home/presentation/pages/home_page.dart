@@ -23,6 +23,10 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
     _ingredientController = TextEditingController();
+    // Sayfa yüklendiğinde TextField'a focus ver
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNode.requestFocus();
+    });
   }
 
   @override
@@ -39,7 +43,10 @@ class _HomePageState extends ConsumerState<HomePage> {
         _ingredients.add(text);
         _ingredientController.clear();
       });
-      _focusNode.requestFocus();
+      // setState'in tamamlanmasını bekleyip focus'u tetikle
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _focusNode.requestFocus();
+      });
     }
   }
 
@@ -54,7 +61,10 @@ class _HomePageState extends ConsumerState<HomePage> {
       _ingredients.clear();
       _recipe = null;
     });
-    _focusNode.requestFocus();
+    // setState'in tamamlanmasını bekleyip focus'u tetikle
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNode.requestFocus();
+    });
   }
 
   Future<void> _getRecipes() async {
@@ -98,47 +108,123 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.appTitle),
+        centerTitle: true,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.restaurant_menu,
+              color: theme.colorScheme.primary,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              l10n.appTitle,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.primary,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: theme.colorScheme.surface,
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _ingredientController,
-                    focusNode: _focusNode,
-                    decoration: InputDecoration(
-                      hintText: l10n.ingredientHint,
-                      labelText: l10n.ingredientLabel,
+            // Welcome section
+            if (_ingredients.isEmpty && _recipe == null) ...[
+              Text(
+                l10n.welcomeTitle,
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.welcomeDescription,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+            
+            // Ingredient input section
+            Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _ingredientController,
+                              focusNode: _focusNode,
+                              decoration: InputDecoration(
+                                hintText: l10n.ingredientHint,
+                                labelText: l10n.ingredientLabel,
+                                helperText: l10n.ingredientInputHelper,
+                                border: const OutlineInputBorder(),
+                              ),
+                              onSubmitted: (_) => _addIngredient(),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 22), // Helper text'in yüksekliğini dengelemek için
+                            child: Tooltip(
+                              message: l10n.addIngredientButtonTooltip,
+                              child: IconButton(
+                                onPressed: _addIngredient,
+                                icon: const Icon(Icons.add),
+                                style: IconButton.styleFrom(
+                                  backgroundColor: theme.colorScheme.primary,
+                                  foregroundColor: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    onSubmitted: (_) => _addIngredient(),
-                  ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                IconButton(
-                  onPressed: _addIngredient,
-                  icon: const Icon(Icons.add),
-                  style: IconButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-              ],
+              ),
             ),
             const SizedBox(height: 16),
+
+            // Ingredients list section
+            if (_ingredients.isEmpty && _recipe == null) ...[
+              Center(
+                child: Text(
+                  l10n.noIngredientsMessage,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                  ),
+                ),
+              ),
+            ],
+            
             if (_ingredients.isNotEmpty) ...[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     l10n.addedIngredients,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -146,70 +232,77 @@ class _HomePageState extends ConsumerState<HomePage> {
                     onPressed: _clearAllIngredients,
                     icon: const Icon(Icons.delete_sweep),
                     tooltip: l10n.clearAllIngredients,
-                    color: Colors.red,
+                    color: theme.colorScheme.error,
                   ),
                 ],
               ),
               const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: _ingredients
-                    .asMap()
-                    .entries
-                    .map(
-                      (entry) => Chip(
-                        label: Text(entry.value),
-                        onDeleted: () => _removeIngredient(entry.key),
-                      ),
-                    )
-                    .toList(),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: _ingredients
+                        .asMap()
+                        .entries
+                        .map(
+                          (entry) => Chip(
+                            label: Text(
+                              entry.value,
+                              style: TextStyle(
+                                color: theme.colorScheme.onSecondaryContainer,
+                              ),
+                            ),
+                            onDeleted: () => _removeIngredient(entry.key),
+                            backgroundColor: theme.colorScheme.secondaryContainer,
+                            side: BorderSide.none,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _isLoading ? null : _getRecipes,
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : Text(l10n.listRecipes),
+              Center(
+                child: FilledButton.icon(
+                  onPressed: _isLoading ? null : _getRecipes,
+                  icon: _isLoading
+                      ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: theme.colorScheme.onPrimary,
+                          ),
+                        )
+                      : const Icon(Icons.search),
+                  label: Text(l10n.listRecipes),
+                ),
               ),
             ],
+
+            // Recipe results section
             if (_recipe != null) ...[
               const SizedBox(height: 24),
               Text(
                 l10n.suggestedRecipes,
-                style: const TextStyle(
-                  fontSize: 18,
+                style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
               Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: SingleChildScrollView(
-                    child: Text(
-                      _recipe!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        height: 1.5,
+                child: Card(
+                  elevation: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: SingleChildScrollView(
+                      child: Text(
+                        _recipe!,
+                        style: theme.textTheme.bodyLarge?.copyWith(
+                          height: 1.5,
+                        ),
                       ),
                     ),
                   ),
