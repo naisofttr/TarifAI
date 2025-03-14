@@ -49,7 +49,6 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         );
         _ingredientController.clear();
-        // setState'in tamamlanmasını bekleyip focus'u tetikle
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _focusNode.requestFocus();
         });
@@ -60,7 +59,8 @@ class _HomePageState extends ConsumerState<HomePage> {
         _ingredients.add(text);
         _ingredientController.clear();
       });
-      // setState'in tamamlanmasını bekleyip focus'u tetikle
+      
+      // setState'ten sonra focus'u tetikle
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _focusNode.requestFocus();
       });
