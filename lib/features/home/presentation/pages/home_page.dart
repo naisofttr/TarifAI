@@ -24,9 +24,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.initState();
     _ingredientController = TextEditingController();
     // Sayfa yüklendiğinde TextField'a focus ver
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.requestFocus();
-    });
+    _requestFocus();
   }
 
   @override
@@ -36,12 +34,18 @@ class _HomePageState extends ConsumerState<HomePage> {
     super.dispose();
   }
 
+  void _requestFocus() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        FocusScope.of(context).requestFocus(_focusNode);
+      }
+    });
+  }
+
   void _addIngredient() {
     final text = _ingredientController.text.trim();
     if (text.isNotEmpty) {
-      // Malzemenin listede olup olmadığını kontrol et
       if (_ingredients.contains(text)) {
-        // Malzeme zaten listede varsa
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(AppLocalizations.of(context)!.ingredientAlreadyExists),
@@ -49,9 +53,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         );
         _ingredientController.clear();
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _focusNode.requestFocus();
-        });
+        _requestFocus();
         return;
       }
 
@@ -60,10 +62,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         _ingredientController.clear();
       });
       
-      // setState'ten sonra focus'u tetikle
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _focusNode.requestFocus();
-      });
+      _requestFocus();
     }
   }
 
@@ -71,17 +70,20 @@ class _HomePageState extends ConsumerState<HomePage> {
     setState(() {
       _ingredients.removeAt(index);
     });
+    
+    if (_ingredients.isEmpty) {
+      _requestFocus();
+    }
   }
 
   void _clearAllIngredients() {
     setState(() {
       _ingredients.clear();
       _recipe = null;
+      _ingredientController.clear();
     });
-    // setState'in tamamlanmasını bekleyip focus'u tetikle
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.requestFocus();
-    });
+
+    _requestFocus();
   }
 
   Future<void> _getRecipes() async {
